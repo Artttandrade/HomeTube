@@ -6,7 +6,11 @@ module.exports = {
         let respo;
         //fs.readFile('./index.html', (err, html) => res.end(html));
         await fs.readdir("./movies", (err, respo) => {
-            return res.json(respo)
+            var data = [];
+            for(name in respo){
+                if(respo[name].indexOf('.mp4') !== -1) data.push(respo[name]);
+            }
+            return res.json(data);
         });
         //return res.json({resp});
     },
@@ -23,7 +27,7 @@ module.exports = {
         // Variáveis necessárias para montar o chunk header corretamente
         const { range } = req.headers;
         const { size } = stats;
-        console.log(range)
+        //console.log(range)
         const start = Number((range || '').replace(/bytes=/, '').split('-')[0]);
         const end = size - 1;
         const chunkSize = (end - start) + 1;
